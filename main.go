@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"log"
 	"math/rand"
 	"os"
@@ -30,12 +31,13 @@ func init() {
 
 func main() {
 	writeRandomDigitsToFile(2048)
+	readDigitsFromFile()
 }
 
 // writeRandomDigitsToFile - This function will write random number in to the file
 func writeRandomDigitsToFile(length int) {
-	// Open the digits file with Write only permission
-	file, err := os.OpenFile("digits.txt", os.O_WRONLY, 0700)
+	// Open the digits file with Write-only permission
+	file, err := os.OpenFile("digits.txt", os.O_WRONLY, 0222)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -47,5 +49,22 @@ func writeRandomDigitsToFile(length int) {
 		// to random digit in range 0 - 9
 		n := strconv.Itoa(rand.Intn(10))
 		file.WriteString(n)
+	}
+}
+
+func readDigitsFromFile() {
+	// Open the digits file with Read-only permission
+	file, err := os.OpenFile("digits.txt", os.O_RDONLY, 0444)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanRunes)
+
+	for scanner.Scan() {
+		text := scanner.Text()
+		println(text)
 	}
 }
