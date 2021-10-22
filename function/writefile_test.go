@@ -34,12 +34,13 @@ func checkfile(filePath string) {
 }
 
 func TestWriteLenght(t *testing.T) {
+	testLenght := 10
 	filePath := "TestWriteLenght.txt"
 
 	checkfile(filePath)
 	defer os.Remove(filePath)
 
-	WriteRandomDigitsToFile(filePath, 10)
+	WriteRandomDigitsToFile(filePath, testLenght)
 
 	file, err := ioutil.ReadFile(filePath)
 	if err != nil {
@@ -47,5 +48,13 @@ func TestWriteLenght(t *testing.T) {
 		t.Fail()
 	}
 
-	assert.Equal(t, 10, len(string(file)))
+	assert.Equal(t, testLenght, len(string(file)))
+}
+
+func TestFileNotfound(t *testing.T) {
+	assert.Panics(
+		t,
+		func() { WriteRandomDigitsToFile("randomfile.txt", 1) },
+		"code should be panic",
+	)
 }
