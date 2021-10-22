@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"log"
 	"os"
+	"strconv"
 )
 
 // ReadDigitsFromFile - read the file and print the even/odd result
@@ -22,6 +23,12 @@ func ReadDigitsFromFile() {
 
 	for scanner.Scan() {
 		text := scanner.Text()
-		printEvenOdd(&text)
+		// Convert text into int
+		n, err := strconv.Atoi(text)
+		if err != nil {
+			log.Print(err.Error())
+			continue
+		}
+		printEvenOdd(&n)
 	}
 }
