@@ -30,3 +30,11 @@ func TestReadDigit(t *testing.T) {
 	scanner.Scan()
 	assert.Equal(t, testText, scanner.Text())
 }
+
+func TestReadFileNotfound(t *testing.T) {
+	assert.Panics(
+		t,
+		func() { ReadDigitsFromFile("randomfile.txt") },
+		"code should be panic",
+	)
+}
