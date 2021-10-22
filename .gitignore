@@ -9,4 +9,5 @@
 *.test
 
 # my local files, please ignored
+digits.txt
 test.txt
