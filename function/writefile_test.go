@@ -51,7 +51,7 @@ func TestWriteLenght(t *testing.T) {
 	assert.Equal(t, testLenght, len(string(file)))
 }
 
-func TestFileNotfound(t *testing.T) {
+func TestWriteFileNotfound(t *testing.T) {
 	assert.Panics(
 		t,
 		func() { WriteRandomDigitsToFile("randomfile.txt", 1) },
