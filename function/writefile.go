@@ -1,7 +1,6 @@
 package function
 
 import (
-	"log"
 	"math/rand"
 	"os"
 	"strconv"
@@ -12,7 +11,7 @@ func WriteRandomDigitsToFile(filePath string, length int) {
 	// Open the digits file with Write-only permission
 	file, err := os.OpenFile(filePath, os.O_WRONLY, 0222)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err.Error())
 	}
 	// Close the file when the function end
 	defer file.Close()
