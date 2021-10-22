@@ -41,7 +41,7 @@ func writeRandomDigitsToFile(length int) {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	//
+	// close the file when the function end
 	defer file.Close()
 
 	// to generate the 2048 digits
@@ -58,13 +58,33 @@ func readDigitsFromFile() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+	// close the file when the function end
 	defer file.Close()
 
+	// Use scanner to read file content
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanRunes)
 
 	for scanner.Scan() {
 		text := scanner.Text()
-		println(text)
+		printEvenOdd(&text)
 	}
+}
+
+func printEvenOdd(text *string) {
+	if text == nil {
+		print("cannot print even/odd: argement is nil")
+		return
+	}
+
+	n, err := strconv.Atoi(*text)
+	if err != nil {
+		println(*text + " is not a number")
+	}
+	if n == 0 || n%2 == 0 {
+		println(*text + " is is an even number")
+		return
+	}
+	println(*text + " is is an odd number")
+	return
 }
