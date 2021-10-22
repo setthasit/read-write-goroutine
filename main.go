@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	// declare the seed value in order to make the random number chage overtime
+	// Declare the seed value in order to make the random number chage overtime
 	rand.Seed(time.Now().UTC().UnixNano())
 
 	// Check if the file exist, if not will create the new file
@@ -41,10 +41,10 @@ func writeRandomDigitsToFile(length int) {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	// close the file when the function end
+	// Close the file when the function end
 	defer file.Close()
 
-	// to generate the 2048 digits
+	// To generate the 2048 digits
 	for i := 0; i < length; i++ {
 		// to random digit in range 0 - 9
 		n := strconv.Itoa(rand.Intn(10))
@@ -52,13 +52,14 @@ func writeRandomDigitsToFile(length int) {
 	}
 }
 
+// readDigitsFromFile - read the file and print the even/odd result
 func readDigitsFromFile() {
 	// Open the digits file with Read-only permission
 	file, err := os.OpenFile("digits.txt", os.O_RDONLY, 0444)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	// close the file when the function end
+	// Close the file when the function end
 	defer file.Close()
 
 	// Use scanner to read file content
@@ -71,16 +72,21 @@ func readDigitsFromFile() {
 	}
 }
 
+// printEvenOdd - Check and print if the number is even or odd
 func printEvenOdd(text *string) {
+	// Check if text is nil
 	if text == nil {
-		print("cannot print even/odd: argement is nil")
+		print("cannot print even/odd: argument is nil")
 		return
 	}
 
+	// Convert the text into int
 	n, err := strconv.Atoi(*text)
 	if err != nil {
 		println(*text + " is not a number")
 	}
+
+	// Check if the number is even or odd and print the number
 	if n == 0 || n%2 == 0 {
 		println(*text + " is is an even number")
 		return
