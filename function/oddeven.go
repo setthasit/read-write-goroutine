@@ -4,8 +4,8 @@ import (
 	"log"
 )
 
-// printEvenOdd - Check and print if the number is even or odd
-func printEvenOdd(n *int) {
+// PrintEvenOdd - Check and print if the number is even or odd
+func PrintEvenOdd(n *int) {
 	// Check if text is nil
 	if n == nil {
 		log.Print("cannot print even/odd: argument is nil")
