@@ -36,6 +36,14 @@ func TestOddNumber(t *testing.T) {
 	}
 }
 
+func TestNilNumber(t *testing.T) {
+	output := captureOutput(func() {
+		printEvenOdd(nil)
+	})
+	expected := "cannot print even/odd: argument is nil\n"
+	assert.Equal(t, expected, output)
+}
+
 func captureOutput(f func()) string {
 	var buf bytes.Buffer
 	log.SetOutput(&buf)
