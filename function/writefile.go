@@ -8,9 +8,9 @@ import (
 )
 
 // WriteRandomDigitsToFile - This function will write random number in to the file
-func WriteRandomDigitsToFile(length int) {
+func WriteRandomDigitsToFile(filePath string, length int) {
 	// Open the digits file with Write-only permission
-	file, err := os.OpenFile("digits.txt", os.O_WRONLY, 0222)
+	file, err := os.OpenFile(filePath, os.O_WRONLY, 0222)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
