@@ -25,6 +25,17 @@ func TestEvenNumber(t *testing.T) {
 	}
 }
 
+func TestOddNumber(t *testing.T) {
+	testCase := []int{-1, 1, 3, 5, 7, 9}
+	for _, n := range testCase {
+		output := captureOutput(func() {
+			printEvenOdd(&n)
+		})
+		expected := fmt.Sprintf("%d is is an odd number\n", n)
+		assert.Equal(t, expected, output)
+	}
+}
+
 func captureOutput(f func()) string {
 	var buf bytes.Buffer
 	log.SetOutput(&buf)
