@@ -32,7 +32,28 @@ func TestReadDigit(t *testing.T) {
 		// int(txt-'0') is for convert rune to int
 		assert.Equal(t, int(txt-'0'), n)
 	}
+}
 
+func TestFailConvertNonNumber(t *testing.T) {
+	filePath := "TestReadDigit.txt"
+	testText := "asdWE"
+
+	file, err := os.Create(filePath)
+	if err != nil {
+		t.Error(err.Error())
+	}
+	file.Close()
+	defer os.Remove(filePath)
+
+	err = ioutil.WriteFile(filePath, []byte(testText), 0222)
+	if err != nil {
+		t.Error(err.Error())
+	}
+
+	var mu sync.RWMutex
+	for idx := range testText {
+		assert.Panics(t, func() { ReadDigitsFromFilePosition(filePath, int64(idx), &mu) }, "code should be panic")
+	}
 }
 
 func TestReadFileNotfound(t *testing.T) {

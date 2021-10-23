@@ -2,7 +2,6 @@ package function
 
 import (
 	"bufio"
-	"log"
 	"os"
 	"strconv"
 	"sync"
@@ -31,7 +30,7 @@ func ReadDigitsFromFilePosition(filePath string, position int64, mu *sync.RWMute
 	str := scanner.Text()
 	n, err := strconv.Atoi(str)
 	if err != nil {
-		log.Print(err.Error())
+		panic(err.Error())
 	}
 
 	return n
