@@ -45,14 +45,16 @@ func init() {
 	// Check if there command argument
 	// argument should be number
 	digitsLength = 2048
-	if os.Args[1] != "" {
-		argLength, err := strconv.Atoi(os.Args[1])
-		if err != nil {
-			log.Fatal(err.Error())
-		}
+	if len(os.Args) > 1 {
+		if os.Args[1] != "" {
+			argLength, err := strconv.Atoi(os.Args[1])
+			if err != nil {
+				log.Fatal(err.Error())
+			}
 
-		if argLength > 0 {
-			digitsLength = int64(argLength)
+			if argLength > 0 {
+				digitsLength = int64(argLength)
+			}
 		}
 	}
 }
