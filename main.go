@@ -67,8 +67,22 @@ func main() {
 	go function.WriteRandomDigitsToFile(filePath, digitsLength, changes, &mu)
 
 	// Read the digits and print to console
+	counts := [10]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 	for change := range changes {
 		n := function.ReadDigitsFromFilePosition(filePath, change, &mu)
 		function.PrintEvenOdd(&n)
+
+		counts[n] += 1
 	}
+
+	// Summary of digits in the file
+	log.Println("#############################")
+	log.Println("Each digit count in the file")
+	log.Println("#############################")
+	var totalCount = 0
+	for idx, count := range counts {
+		log.Printf("%d has %d\n", idx, count)
+		totalCount += count
+	}
+	log.Printf("Total digits counts in the file is %d\n", totalCount)
 }
