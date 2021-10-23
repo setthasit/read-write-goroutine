@@ -1,6 +1,6 @@
 # Read and Write Goroutine
 ## Sneak peek
-![Sneak Peek](./docs/10digits.png)![Sneak Peek](./docs/10digits.png)
+![Sneak Peek](./docs/10digits.png)
 
 This project will show you how file read and write operation can be done asynchronous. The concurrent task can be achieve by using `goroutine` and `channel`. let dive in! 🚀🚀🚀
 
