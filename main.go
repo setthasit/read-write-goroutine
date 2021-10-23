@@ -41,5 +41,10 @@ func main() {
 	changes := make(chan int64, 2048)
 
 	// Write the digits to file concurently
-	function.WriteRandomDigitsToFile(filePath, 2048, changes, &mu)
+	go function.WriteRandomDigitsToFile(filePath, 2048, changes, &mu)
+
+	for change := range changes {
+		n := function.ReadDigitsFromFilePosition(filePath, change, &mu)
+		function.PrintEvenOdd(&n)
+	}
 }
