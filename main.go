@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"os"
 	"read-digit/function"
+	"runtime"
 	"sync"
 	"time"
 )
@@ -12,6 +13,11 @@ import (
 var filePath = "digits.txt"
 
 func init() {
+	// Check if CPU >= 2 cores
+	if runtime.NumCPU() >= 2 {
+		runtime.GOMAXPROCS(2)
+	}
+
 	// remove prefix & flag form log output
 	log.SetFlags(0)
 
