@@ -1,9 +1,11 @@
 package function
 
 import (
+	"sync"
+	"testing"
+
 	"io/ioutil"
 	"os"
-	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -24,17 +26,20 @@ func TestReadDigit(t *testing.T) {
 		t.Error(err.Error())
 	}
 
-	file, scanner := ReadDigitsFromFile(filePath)
-	defer file.Close()
+	var mu sync.RWMutex
+	for idx, txt := range testText {
+		n := ReadDigitsFromFilePosition(filePath, int64(idx), &mu)
+		// int(txt-'0') is for convert rune to int
+		assert.Equal(t, int(txt-'0'), n)
+	}
 
-	scanner.Scan()
-	assert.Equal(t, testText, scanner.Text())
 }
 
 func TestReadFileNotfound(t *testing.T) {
+	var mu sync.RWMutex
 	assert.Panics(
 		t,
-		func() { ReadDigitsFromFile("randomfile.txt") },
+		func() { ReadDigitsFromFilePosition("randomfile.txt", 0, &mu) },
 		"code should be panic",
 	)
 }

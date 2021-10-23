@@ -2,45 +2,23 @@ package function
 
 import (
 	"io/ioutil"
-	"log"
-	"math/rand"
 	"os"
+	"sync"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func checkfile(filePath string) {
-	// remove prefix & flag form log output
-	log.SetFlags(0)
-	// Declare the seed value in order to make the random number chage overtime
-	rand.Seed(time.Now().UTC().UnixNano())
-
-	// Check if the file exist, if not will create the new file
-	if _, err := os.Stat(filePath); err != nil {
-		file, err := os.Create(filePath)
-		if err != nil {
-			log.Fatal(err.Error())
-		}
-		file.Close()
-		return
-	}
-	// If file exist, clear the content in the file
-	err := os.Truncate(filePath, 0)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-}
-
 func TestWriteLenght(t *testing.T) {
-	testLenght := 10
+	var testLenght int64 = 10
+	changes := make(chan int64, testLenght)
 	filePath := "TestWriteLenght.txt"
 
 	checkfile(filePath)
 	defer os.Remove(filePath)
 
-	WriteRandomDigitsToFile(filePath, testLenght)
+	var mu sync.RWMutex
+	WriteRandomDigitsToFile(filePath, testLenght, changes, &mu)
 
 	file, err := ioutil.ReadFile(filePath)
 	if err != nil {
@@ -48,13 +26,15 @@ func TestWriteLenght(t *testing.T) {
 		t.Fail()
 	}
 
-	assert.Equal(t, testLenght, len(string(file)))
+	assert.Equal(t, int(testLenght), len(string(file)))
 }
 
 func TestWriteFileNotfound(t *testing.T) {
+	var mu sync.RWMutex
+	changes := make(chan int64)
 	assert.Panics(
 		t,
-		func() { WriteRandomDigitsToFile("randomfile.txt", 1) },
+		func() { WriteRandomDigitsToFile("randomfile.txt", 1, changes, &mu) },
 		"code should be panic",
 	)
 }
