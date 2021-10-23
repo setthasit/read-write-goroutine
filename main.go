@@ -1,12 +1,11 @@
 package main
 
 import (
-	"bufio"
 	"log"
 	"math/rand"
 	"os"
 	"read-digit/function"
-	"strconv"
+	"sync"
 	"time"
 )
 
@@ -15,6 +14,7 @@ var filePath = "digits.txt"
 func init() {
 	// remove prefix & flag form log output
 	log.SetFlags(0)
+
 	// Declare the seed value in order to make the random number chage overtime
 	rand.Seed(time.Now().UTC().UnixNano())
 
@@ -35,23 +35,11 @@ func init() {
 }
 
 func main() {
-	// Write the digits to file
-	function.WriteRandomDigitsToFile(filePath, 2048)
+	// Mutex use for preventing race condition
+	var mu sync.RWMutex
+	// Channel that contain position of new digits
+	changes := make(chan int64, 2048)
 
-	// Read digit from file
-	file, scanner := function.ReadDigitsFromFile(filePath)
-	// Close the file when the function end
-	defer file.Close()
-
-	scanner.Split(bufio.ScanRunes)
-	for scanner.Scan() {
-		text := scanner.Text()
-		// Convert text into int
-		n, err := strconv.Atoi(text)
-		if err != nil {
-			log.Print(err.Error())
-			continue
-		}
-		function.PrintEvenOdd(&n)
-	}
+	// Write the digits to file concurently
+	function.WriteRandomDigitsToFile(filePath, 2048, changes, &mu)
 }
